@@ -13,3 +13,7 @@ bool Entity::collidesWith(const Entity& other) const {
     float distance = position.distance(other.position);
     return distance < (radius + other.radius);
 }
+
+void Entity::onCollision(const Entity& other) {
+    // Do nothing by default
+}

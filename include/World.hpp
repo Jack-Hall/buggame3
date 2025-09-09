@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.hpp"
+#include "CollisionManager.hpp"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <memory>
@@ -22,8 +23,8 @@ public:
     
 private:
     void createBoundaries();
-    void handleCollisions();
-    
+    CollisionManager collisionManager;
+
     int width, height;
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<sf::RectangleShape> boundaries;

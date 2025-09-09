@@ -1,5 +1,6 @@
 #pragma once
 #include "World.hpp"
+#include "CollisionManager.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 

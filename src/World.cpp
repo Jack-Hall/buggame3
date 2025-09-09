@@ -1,9 +1,10 @@
 #include "World.hpp"
 #include <random>
 
-World::World(int width, int height) : width(width), height(height), gen(rd()) {
+World::World(int width, int height) :collisionManager(), width(width), height(height), gen(rd()) {
     createBoundaries();
     spawnRandomEnemies(15); // Start with 15 enemies
+
 }
 
 void World::update(float deltaTime) {
@@ -29,7 +30,6 @@ void World::update(float deltaTime) {
         }
     }
     
-    handleCollisions();
 }
 
 void World::render(sf::RenderWindow& window) {
@@ -47,6 +47,7 @@ void World::render(sf::RenderWindow& window) {
 void World::spawnEnemy(const Vector2& position, EnemyType type) {
     if (isPositionValid(position, 15.0f)) {
         enemies.push_back(std::make_unique<Enemy>(position, type));
+        collisionManager.registerObject(enemies.back().get());
     }
 }
 
@@ -121,22 +122,4 @@ void World::createBoundaries() {
     boundaries.push_back(rightBorder);
 }
 
-void World::handleCollisions() {
-    // Simple collision handling between enemies
-    for (size_t i = 0; i < enemies.size(); ++i) {
-        for (size_t j = i + 1; j < enemies.size(); ++j) {
-            if (enemies[i]->collidesWith(*enemies[j])) {
-                // Simple separation
-                Vector2 pos1 = enemies[i]->getPosition();
-                Vector2 pos2 = enemies[j]->getPosition();
-                Vector2 direction = (pos1 - pos2).normalized();
-                
-                float overlap = (enemies[i]->getRadius() + enemies[j]->getRadius()) - pos1.distance(pos2);
-                Vector2 separation = direction * (overlap * 0.5f);
-                
-                enemies[i]->setPosition(pos1 + separation);
-                enemies[j]->setPosition(pos2 - separation);
-            }
-        }
-    }
-}
+

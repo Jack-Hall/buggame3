@@ -22,6 +22,8 @@ public:
     
     // Collision detection
     bool collidesWith(const Entity& other) const;
+    void onCollision(const Entity& other) ;
+
     
 protected:
     Vector2 position;
